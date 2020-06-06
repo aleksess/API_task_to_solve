@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1 Welcome
-  ul
-    li Event_A 
-    li Event_B
-    li Event_C
+  ul(id="ul")
+  a(href="/register" style="{margin-right: 3px;}") Register for an event   
+  a(href="/manage") Manage your event
+  script(src="index.js")

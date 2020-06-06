@@ -1,21 +1,22 @@
 var express = require('express');
 var router = express.Router();
+Date.parse('03.03.2020')
 
 let Events = [
     {
         title: 'Event_A',
-        date_start: '30-11-2020',
-        date_end: '03-12-2020'
+        date_start: '06.08.2020',
+        date_end: '06.09.2020'
     },
     {
         title: 'Event_B',
-        date_start: '01-12-2020',
-        date_end: '02-02-2020'
+        date_start: '06.08.2020',
+        date_end: '06.10.2020'
     },
     {
         title: 'Event_C',
-        date_start: '01-12-2020',
-        date_end: '03-02-2020'
+        date_start: '06.09.2020',
+        date_end: '06.11.2020'
     }
 
 ]
@@ -33,6 +34,9 @@ function randomInt(min, max) {
 router.get('/', function(req, res, next) {
   res.render('register');
 });
+router.get('/events', (req, res) =>{
+   res.send(Events)
+})
 
 
 
@@ -80,6 +84,36 @@ router.post('/sign', (req, res) => {
 
     
     
+})
+
+router.post('/delete', (req, res) => {
+    const body = req.body
+    console.log(body)
+
+    const filterRegistrationsFunc = Element => Element.Code === body.Code
+
+    const filteredRegistrations = registrations.filter(filterRegistrationsFunc)
+    console.log(registrations)
+    console.log(filteredRegistrations)
+
+    if (Array.isArray(filteredRegistrations) && filteredRegistrations.length){
+        const filterEventsFunc = Element => Element.title === filteredRegistrations[0].Event
+        
+        const filteredEvents = Events.filter(filterEventsFunc)
+
+        if ((Date.parse(filteredEvents[0].date_start) - Date.now()) >= 86400000 && (Date.parse(filteredEvents[0].date_end) - Date.parse(filteredEvents[0].date_start) >= 86400000)) {
+            const newRegistrations = registrations.filter(Element => Element.Code !== body.Code)
+            registrations = newRegistrations
+            console.log(registrations)
+            res.send({code: 200, message: 'Your registration deleted successfully'})
+        } else {
+            res.send({code: 400, message: 'You can\'t resign from this event'})
+        }
+    } else{
+        res.send({code: 400, message: 'There\'s no such registration.'})
+    }
+    
+
 })
 
 module.exports = router;
