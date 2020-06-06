@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    h1 Register for an event
+    input(type="text" id="Name" placeholder="Name")
+    input(type="text" id="Lastname" placeholder="Lastname")
+    input(list="Events" id="Event") 
+    datalist(id="Events")
+        option(value="Event_A")
+        option(value="Event_B")
+        option(value="Event_C")
+    input(type="Submit" id="register_button")
+    a(href="/") Go back to ho
